@@ -35,40 +35,38 @@ def scrape_bitcoin_data():
     try:
         # Extract Bitcoin Price
         price = WebDriverWait(driver, 15).until(
-            EC.presence_of_element_located((By.XPATH, '//span[@data-test="text-cdp-price-display"]'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "span[data-test='text-cdp-price-display']"))
         ).text
 
         # Extract Market Cap
         market_cap = WebDriverWait(driver, 15).until(
             EC.presence_of_element_located(
-                (By.XPATH, "//dt[.//div[contains(text(),'Market cap')]]/following-sibling::dd//span")
+                (By.CSS_SELECTOR, "dt:has(div:contains('Market cap')) + dd span")
             )
         ).text
 
         # Extract 24h Trading Volume
         volume_24h = WebDriverWait(driver, 15).until(
             EC.presence_of_element_located(
-                (By.XPATH, "//dt[.//div[contains(text(),'Volume (24h')]]/following-sibling::dd//span")
+                (By.CSS_SELECTOR, "dt:has(div:contains('Volume (24h')) + dd span")
             )
         ).text
 
         # Extract Circulating Supply
         circulating_supply = WebDriverWait(driver, 15).until(
             EC.presence_of_element_located(
-                (By.XPATH, "//dt[.//div[contains(text(),'Circulating supply')]]/following-sibling::dd//span")
+                (By.CSS_SELECTOR, "dt:has(div:contains('Circulating supply')) + dd span")
             )
         ).text
 
         # Extract 24h Price Change
         price_change_24h = WebDriverWait(driver, 15).until(
-            EC.presence_of_element_located((By.XPATH, "//p[contains(@class, 'change-text')]") )
+            EC.presence_of_element_located((By.CSS_SELECTOR, "p.change-text"))
         ).text
 
         # Extract Community Sentiment
-        bullish_sentiment_elems = driver.find_elements(By.XPATH,
-                                                       "//span[contains(@class, 'sc-65e7f566-0 cOjBdO') and contains(@class, 'ratio')]")
-        bearish_sentiment_elems = driver.find_elements(By.XPATH,
-                                                       "//span[contains(@class, 'sc-65e7f566-0 iKkbth') and contains(@class, 'ratio')]")
+        bullish_sentiment_elems = driver.find_elements(By.CSS_SELECTOR, "span.sc-65e7f566-0.cOjBdO.ratio")
+        bearish_sentiment_elems = driver.find_elements(By.CSS_SELECTOR, "span.sc-65e7f566-0.iKkbth.ratio")
 
         bullish = bullish_sentiment_elems[0].text if bullish_sentiment_elems else "N/A"
         bearish = bearish_sentiment_elems[0].text if bearish_sentiment_elems else "N/A"
